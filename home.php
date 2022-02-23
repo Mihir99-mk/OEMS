@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>ExamBrain</title>
+		<title>OEMS</title>
 		<link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
 		<link rel="stylesheet" href="vendors/owl.carousel/css/owl.carousel.css">
 		<link rel="stylesheet" href="vendors/owl.carousel/css/owl.theme.default.min.css">

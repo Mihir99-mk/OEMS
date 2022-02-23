@@ -36,7 +36,22 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
 </head>
+<?php
 
+  if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
+    echo "Cookie named '" . $cookie_name . "' is not set!";
+
+    // exit;
+
+  } else {
+
+    // continue;
+    header('Location: login.php');
+    exit;
+    echo "Cookie '" . $cookie_name . "' is set!<br>";
+    echo "Value is: " . $_COOKIE[$cookie_name];
+  }
+  ?>
 <body>
 
   <!-- ======= Header ======= -->
@@ -67,7 +82,7 @@
         <div class="col-lg-8">
 
           <!-- F.A.Q Group 2 -->
-          <div class="card">
+          <!-- <div class="card">
             <div class="card-body">
               <h5 class="card-title">Deserunt ut unde corporis</h5>
 
@@ -141,7 +156,7 @@
               </div>
 
             </div>
-          </div>
+          </div> -->
           <!-- End F.A.Q Group 2 -->
         </div>
 

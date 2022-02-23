@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!$_SESSION['email']) {
+  # code...
+  header('location: login.php');
+}
+
+?>
+
 <!DOCTYPE php>
 <php lang="en">
 
@@ -29,13 +38,67 @@
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
 
-    <!-- =======================================================
-  * Template Name: NiceAdmin - v2.2.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-php-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+
   </head>
+
+  <?php
+  // $style = "";
+  // $s = "";
+
+  // $cookie_name = $_POST["username"];
+  // $cookie_value = $_POST["password"];
+
+  // setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "facutly/");
+  ?>
+
+  <?php
+
+  // if (isset($_POST['register'])) {
+  //   $firstName = $_POST['firstName'];
+  //   $lastName = $_POST['lastName'];
+  //   $email = $_POST['email'];
+  //   $passwords = $_POST['passwords'];
+
+  //   $con = new mysqli('localhost', 'root', '', 'college');
+  //   if ($con->connect_error) {
+  //     echo "Connection fail" . $con->connect_error;
+  //   } else {
+  //     $sql = "INSERT INTO register " .
+  //       "(firstName, lastName, email, password) " . "VALUES " .
+  //       "('$firstName', '$lastName', '$email', '$passwords')";
+  //     if ($con->query($sql)) {
+  //       printf("New record created successfully");
+  //     } else {
+  //       echo "Error: " . $sql . "<br>" . $con->error;
+  //     }
+  //     $con->close();
+  //   }
+  // }
+
+
+
+  ?>
+
+
+  <?php
+
+  // if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
+  //   echo "Cookie named '" . $cookie_name . "' is not set!";
+
+  //   // exit;
+
+  // } else {
+
+  //   // continue;
+  //   // header('Location: login.php');
+  //   // exit;
+  //   echo "Cookie '" . $cookie_name . "' is set!<br>";
+  //   echo "Value is: " . $_COOKIE[$cookie_name];
+  // }
+  ?>
+
+
+
 
   <body>
 
@@ -47,16 +110,8 @@
     <!-- End Sidebar-->
 
     <main id="main" class="main">
-      <?php
-      $style = "";
-      $s = "";
-      if (isset($_POST["loginbtn"])) {
-        $s = "style='display:none;'";
-      } else {
-        $evalue = "first login";
-        $style = "style='display:none;'";
-      }
-      ?>
+
+
       <div class="pagetitle">
         <h1>Dashboard</h1>
         <nav>
@@ -76,6 +131,7 @@
 
               <!-- Sales Card -->
               <div class="col-xxl-4 col-md-6">
+
                 <div class="card info-card sales-card">
 
                   <div class="filter">
@@ -90,23 +146,24 @@
                       <li><a class="dropdown-item" href="#">This Year</a></li>
                     </ul>
                   </div>
+                  <a href="view-student.php">
+                    <div class="card-body">
+                      <h5 class="card-title">Students <span>| Today</span></h5>
 
-                  <div class="card-body">
-                    <h5 class="card-title">Students <span>| Today</span></h5>
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="bi bi-"><img src="https://img.icons8.com/external-tulpahn-outline-color-tulpahn/64/000000/external-student-back-to-school-tulpahn-outline-color-tulpahn.png" /></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6>145</h6>
+                          <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bi bi-"><img src="https://img.icons8.com/external-tulpahn-outline-color-tulpahn/64/000000/external-student-back-to-school-tulpahn-outline-color-tulpahn.png" /></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>145</h6>
-                        <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
+                        </div>
                       </div>
                     </div>
-                  </div>
-
+                  </a>
                 </div>
+
               </div><!-- End Sales Card -->
 
               <!-- Revenue Card -->
@@ -125,22 +182,22 @@
                       <li><a class="dropdown-item" href="#">This Year</a></li>
                     </ul>
                   </div>
+                  <a href="view-exam.php">
+                    <div class="card-body">
+                      <h5 class="card-title">Exam <span>| This Month</span></h5>
 
-                  <div class="card-body">
-                    <h5 class="card-title">Exam <span>| This Month</span></h5>
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="bi bi-"><img src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-exam-back-to-school-justicon-lineal-color-justicon.png" /></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6>200</h6>
+                          <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bi bi-"><img src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-exam-back-to-school-justicon-lineal-color-justicon.png" /></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>200</h6>
-                        <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
+                        </div>
                       </div>
                     </div>
-                  </div>
-
+                  </a>
                 </div>
               </div><!-- End Revenue Card -->
 
@@ -161,22 +218,23 @@
                       <li><a class="dropdown-item" href="#">This Year</a></li>
                     </ul>
                   </div>
+                  <a href="view-subject.php">
+                    <div class="card-body">
+                      <h5 class="card-title">Course <span>| This Year</span></h5>
 
-                  <div class="card-body">
-                    <h5 class="card-title">Course <span>| This Year</span></h5>
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="bi bi"><img src="https://img.icons8.com/external-filled-outline-geotatah/64/000000/external-course-the-new-normal-filled-outline-filled-outline-geotatah.png" /></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6>12</h6>
+                          <span class="text-success small pt-1 fw-bold">2%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bi bi"><img src="https://img.icons8.com/external-filled-outline-geotatah/64/000000/external-course-the-new-normal-filled-outline-filled-outline-geotatah.png" /></i>
+                        </div>
                       </div>
-                      <div class="ps-3">
-                        <h6>12</h6>
-                        <span class="text-success small pt-1 fw-bold">2%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
-                      </div>
                     </div>
-
-                  </div>
+                  </a>
                 </div>
 
               </div><!-- End Customers Card -->
@@ -224,7 +282,9 @@
 
                   <div class="card-body pb-0">
                     <h5 class="card-title">Recent Quizs <span>| This Month</span></h5>
-
+                    <h5 class="card-title"><?php echo $_SESSION['email']; ?></h5>
+                    <h5 class="card-title"><?php echo $_SESSION['firstName']; ?></h5>
+                    <h5 class="card-title"><?php echo $_SESSION['lastName']; ?></h5>
                     <table class="table table-borderless">
                       <thead>
                         <tr>

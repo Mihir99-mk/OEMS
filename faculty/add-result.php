@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!$_SESSION['email']) {
+  # code...
+  header('location: login.php');
+}
+?>
 <!DOCTYPE php>
 <php lang="en">
 
@@ -29,13 +36,24 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.2.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-php-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  
 </head>
+<?php
+
+  // if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
+  //   echo "Cookie named '" . $cookie_name . "' is not set!";
+
+  //   // exit;
+
+  // } else {
+
+  //   // continue;
+  //   header('Location: login.php');
+  //   exit;
+  //   echo "Cookie '" . $cookie_name . "' is set!<br>";
+  //   echo "Value is: " . $_COOKIE[$cookie_name];
+  // }
+  ?>
 
 <body>
 

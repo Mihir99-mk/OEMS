@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!$_SESSION['email']) {
+  # code...
+  header('location: login.php');
+}
+?>
 <!DOCTYPE php>
 <php lang="en">
 

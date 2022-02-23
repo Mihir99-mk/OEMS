@@ -29,12 +29,6 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.2.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-php-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -58,31 +52,31 @@
                     <p class="text-center small">Enter your personal details to create account</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form class="row g-3 needs-validation" action="login.php" method="POST" novalidate>
                     <div class="col-12">
-                      <label for="yourName" class="form-label">Your Name</label>
-                      <input type="text" name="name" class="form-control" id="yourName" required>
-                      <div class="invalid-feedback">Please, enter your name!</div>
+                      <label for="yourName" class="form-label">Your First Name</label>
+                      <input type="text" name="firstName" class="form-control" id="yourName" required>
+                      <div class="invalid-feedback">Please, enter your first name!</div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourEmail" class="form-label">Your Email</label>
-                      <input type="email" name="email" class="form-control" id="yourEmail" required>
-                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                      <label for="yourEmail" class="form-label">Your Last Name</label>
+                      <input type="text" name="lastName" class="form-control" id="yourEmail" required>
+                      <div class="invalid-feedback">Please enter a valid last name!</div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="email" name="username" class="form-control" id="yourUsername" required>
+                        <input type="email" name="email" class="form-control" id="yourUsername" required>
                         <div class="invalid-feedback">Please choose a email.</div>
                       </div>
                     </div>
 
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
+                      <input type="password" name="passwords" class="form-control" id="yourPassword" required>
                       <div class="invalid-feedback">Please enter your password!</div>
                     </div>
 
@@ -94,7 +88,7 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                      <button class="btn btn-primary w-100" name="register" type="submit">Create Account</button>
                     </div>
                     <div class="col-12">
                       <p class="small mb-0">Already have an account? <a href="login.php">Log in</a></p>
@@ -102,6 +96,30 @@
                   </form>
 
                 </div>
+                <?php 
+                  // if (isset($_POST['register'])) {
+                  //   $firstName = $_POST['firstName'];
+                  //   $lastName = $_POST['lastName'];
+                  //   $email = $_POST['email'];
+                  //   $passwords = $_POST['passwords'];
+                
+                  //   $con = new mysqli('localhost', 'root', '', 'college');
+                  //   if ($con->connect_error) {
+                  //     echo "Connection fail" . $con->connect_error;
+                  //   } else {
+                  //     $sql = "INSERT INTO register " .
+                  //       "(firstName, lastName, email, password) " . "VALUES " .
+                  //       "('$firstName', '$lastName', '$email', '$passwords')";
+                  //     if ($con->query($sql)) {
+                  //       printf("New record created successfully");
+                        
+                  //     } else {
+                  //       echo "Error: " . $sql . "<br>" . $con->error;
+                  //     }
+                  //     $con->close();
+                  //   }
+                  // }
+                ?>
               </div>
 
               <div class="credits">

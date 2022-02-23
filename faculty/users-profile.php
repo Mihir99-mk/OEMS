@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!$_SESSION['email']) {
+  # code...
+  header('location: login.php');
+}
+?>
 <!DOCTYPE php>
 <php lang="en">
 
@@ -29,14 +36,24 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.2.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-php-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
 
+</head>
+<?php
+
+  // if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
+  //   echo "Cookie named '" . $cookie_name . "' is not set!";
+
+  //   // exit;
+
+  // } else {
+
+  //   // continue;
+  //   header('Location: login.php');
+  //   exit;
+  //   echo "Cookie '" . $cookie_name . "' is set!<br>";
+  //   echo "Value is: " . $_COOKIE[$cookie_name];
+  // }
+  ?>
 <body>
 
   <!-- ======= Header ======= -->
@@ -64,10 +81,9 @@
 
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
-              <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-              <h2>Kevin Anderson</h2>
-              <h3>Web Designer</h3>
+              <img src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/50/000000/external-user-interface-kiranshastry-solid-kiranshastry-1.png" alt="Profile" class="rounded-circle" width="120" height="120"/>
+              <h2><?php echo $_SESSION['firstName']; ?></h2>
+              <h3>Faculty</h3>
               <!-- <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -113,7 +129,7 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                    <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION['firstName'];?> <?php echo" ". $_SESSION['lastName']; ?></div>
                   </div>
 
                   <div class="row">
@@ -138,7 +154,7 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
+                    <div class="col-lg-9 col-md-8"><?php echo $_SESSION['email']; ?></div>
                   </div>
 
                 </div>
@@ -161,13 +177,13 @@
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="text" class="form-control" id="fullName" value="Kevin Anderson">
+                        <input name="fullName" type="text" class="form-control" id="fullName" value="<?php echo $_SESSION['firstName'];?>">
                       </div>
                     </div>
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="text" class="form-control" id="fullName" value="Kevin Anderson">
+                        <input name="fullName" type="text" class="form-control" id="fullName" value="<?php echo" ". $_SESSION['lastName']; ?>">
                       </div>
                     </div>
 
@@ -209,7 +225,7 @@
                     <div class="row mb-3">
                       <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="Email" value="k.anderson@example.com">
+                        <input name="email" type="email" class="form-control" id="Email" value="<?php echo" ". $_SESSION['email']; ?>">
                       </div>
                     </div>
 
