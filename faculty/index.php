@@ -1,7 +1,6 @@
 <?php
 session_start();
-if (!$_SESSION['email']) {
-  # code...
+if (!$_SESSION['IS_LOGIN']) {
   header('location: login.php');
 }
 
@@ -40,63 +39,6 @@ if (!$_SESSION['email']) {
 
 
   </head>
-
-  <?php
-  // $style = "";
-  // $s = "";
-
-  // $cookie_name = $_POST["username"];
-  // $cookie_value = $_POST["password"];
-
-  // setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "facutly/");
-  ?>
-
-  <?php
-
-  // if (isset($_POST['register'])) {
-  //   $firstName = $_POST['firstName'];
-  //   $lastName = $_POST['lastName'];
-  //   $email = $_POST['email'];
-  //   $passwords = $_POST['passwords'];
-
-  //   $con = new mysqli('localhost', 'root', '', 'college');
-  //   if ($con->connect_error) {
-  //     echo "Connection fail" . $con->connect_error;
-  //   } else {
-  //     $sql = "INSERT INTO register " .
-  //       "(firstName, lastName, email, password) " . "VALUES " .
-  //       "('$firstName', '$lastName', '$email', '$passwords')";
-  //     if ($con->query($sql)) {
-  //       printf("New record created successfully");
-  //     } else {
-  //       echo "Error: " . $sql . "<br>" . $con->error;
-  //     }
-  //     $con->close();
-  //   }
-  // }
-
-
-
-  ?>
-
-
-  <?php
-
-  // if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
-  //   echo "Cookie named '" . $cookie_name . "' is not set!";
-
-  //   // exit;
-
-  // } else {
-
-  //   // continue;
-  //   // header('Location: login.php');
-  //   // exit;
-  //   echo "Cookie '" . $cookie_name . "' is set!<br>";
-  //   echo "Value is: " . $_COOKIE[$cookie_name];
-  // }
-  ?>
-
 
 
 
@@ -155,7 +97,22 @@ if (!$_SESSION['email']) {
                           <i class="bi bi-"><img src="https://img.icons8.com/external-tulpahn-outline-color-tulpahn/64/000000/external-student-back-to-school-tulpahn-outline-color-tulpahn.png" /></i>
                         </div>
                         <div class="ps-3">
-                          <h6>145</h6>
+                          <?php 
+                            include('connect.php');
+
+                            $countstudent = $con -> prepare("SELECT * FROM student");
+
+                            $countstudent -> execute();
+
+                            $get = $countstudent -> get_result();
+
+                            $get -> fetch_assoc();
+
+                            $countstu = $get -> num_rows;
+                          
+                          ?>
+
+                          <h6><?php echo $countstu; ?></h6>
                           <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                         </div>
@@ -164,7 +121,8 @@ if (!$_SESSION['email']) {
                   </a>
                 </div>
 
-              </div><!-- End Sales Card -->
+              </div>
+              <!-- End Sales Card -->
 
               <!-- Revenue Card -->
               <div class="col-xxl-4 col-md-6">
@@ -191,7 +149,21 @@ if (!$_SESSION['email']) {
                           <i class="bi bi-"><img src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-exam-back-to-school-justicon-lineal-color-justicon.png" /></i>
                         </div>
                         <div class="ps-3">
-                          <h6>200</h6>
+                        <?php 
+                            include('connect.php');
+
+                            $countquiz = $con -> prepare("SELECT * FROM quiz");
+
+                            $countquiz -> execute();
+
+                            $getquiz = $countquiz -> get_result();
+
+                            $getquiz -> fetch_assoc();
+
+                            $countq = $getquiz -> num_rows;
+                          
+                          ?>
+                          <h6><?php echo $countq; ?></h6>
                           <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                         </div>
@@ -220,14 +192,29 @@ if (!$_SESSION['email']) {
                   </div>
                   <a href="view-subject.php">
                     <div class="card-body">
-                      <h5 class="card-title">Course <span>| This Year</span></h5>
+                      <h5 class="card-title">Batch <span>| This Year</span></h5>
 
                       <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                           <i class="bi bi"><img src="https://img.icons8.com/external-filled-outline-geotatah/64/000000/external-course-the-new-normal-filled-outline-filled-outline-geotatah.png" /></i>
                         </div>
                         <div class="ps-3">
-                          <h6>12</h6>
+
+                        <?php 
+                            include('connect.php');
+
+                            $countbatch = $con -> prepare("SELECT * FROM batch");
+
+                            $countbatch -> execute();
+
+                            $getbatch = $countbatch -> get_result();
+
+                            $getbatch -> fetch_assoc();
+
+                            $countb = $getbatch -> num_rows;
+                          
+                          ?>
+                          <h6><?php echo $countb; ?></h6>
                           <span class="text-success small pt-1 fw-bold">2%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                         </div>
@@ -282,14 +269,14 @@ if (!$_SESSION['email']) {
 
                   <div class="card-body pb-0">
                     <h5 class="card-title">Recent Quizs <span>| This Month</span></h5>
-                    <h5 class="card-title"><?php echo $_SESSION['email']; ?></h5>
+                    <!-- <h5 class="card-title"><?php echo $_SESSION['email']; ?></h5>
                     <h5 class="card-title"><?php echo $_SESSION['firstName']; ?></h5>
-                    <h5 class="card-title"><?php echo $_SESSION['lastName']; ?></h5>
+                    <h5 class="card-title"><?php echo $_SESSION['lastName']; ?></h5> -->
                     <table class="table table-borderless">
                       <thead>
                         <tr>
                           <th scope="col">Id</th>
-                          <th scope="col">Subject</th>
+                          <th scope="col">Title</th>
                           <th scope="col" class="text-center">Marks</th>
                           <th scope="col" class="text-center">Duration</th>
                           <th scope="col" class="text-center">Date</th>

@@ -1,12 +1,11 @@
 <?php
-   session_start();
-   if (!$_SESSION['email']) {
-    # code...
-    header('location: login.php');
-  }
+session_start();
+if (!$_SESSION['IS_LOGIN']) {
+  header('location: login.php');
+}
 ?>
 <?php
-  include('connect.php');
+include('connect.php');
 ?>
 <!DOCTYPE php>
 <php lang="en">
@@ -44,11 +43,110 @@
     <link href="assets/css/style.css" rel="stylesheet">
 
 
+    <style>
+      .a{
+        color: red;
+      }
+    </style>
+
+
   </head>
+
+  <?php
+  $examerror = array();
+
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $title = $_POST['title'];
+    $description = $_POST['desc'];
+    $date = $_POST['date'];
+    $stime = $_POST['stime'];
+    $etime = $_POST['etime'];
+    $batch = $_POST['batch'];
+    $active = $_POST['active'];
+    $tmark = $_POST['tmark'];
+
+    $examvaild = true;
+
+    if (empty($title)) {
+      $examvaild = false;
+      $examerror['title'] = "Title cannot be empty";
+    }
+
+    if (empty($description)) {
+      $examvaild = false;
+      $examerror['desc'] = "Description cannot be empty";
+    }
+
+    if (empty($date)) {
+      $examvaild = false;
+      $examerror['date'] = "Date cannot be empty";
+    }
+
+    if (empty($stime)) {
+      $examvaild = false;
+      $examerror['stime'] = "Start time cannot be empty";
+    }
+
+    if (empty($etime)) {
+      $examvaild = false;
+      $examerror['etime'] = "End time cannot be empty";
+    }
+
+    if ($batch == "choose") {
+      $examvaild = false;
+      $examerror['batch'] = "Batch cannot be empty";
+    }
+
+    if (empty($active)) {
+      $examvaild = false;
+      $examerror['active'] = "Active cannot be empty";
+    }
+
+    if (empty($tmark)) {
+      $examvaild = false;
+      $examerror['tmark'] = "Total marks cannot be empty";
+    }
+
+    if ($active == "choose") {
+      $examvaild = false;
+      $examerror['active'] = "Active cannot be empty";
+    }
+
+
+    if ($examvaild) {
+
+
+
+
+      include('connect.php');
+
+      $ba = $con->prepare("SELECT bid FROM batch WHERE className = ?");
+
+      $ba->bind_param('s', $batch);
+
+      $ba->execute();
+
+      $j = $ba->get_result();
+
+      $r = $j->fetch_assoc();
+
+      $j = $r['bid'];
+
+      $addquiz = $con->prepare("INSERT INTO quiz(bid, quizTitle, qdescription, QizDate, QizStatTime, QizEndTime, TotalMark, active) VALUES(?,?,?,?,?,?,?,?)");
+
+      $addquiz->bind_param('isssssis', $r['bid'], $title, $description, $date, $stime, $etime, $tmark, $active);
+
+      $addquiz->execute();
+    }
+  }
+
+  ?>
+
 
   <body>
 
- 
+
 
     <!-- ======= Header ======= -->
     <?php include "navBar.php" ?>
@@ -77,75 +175,124 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Add Quiz</h5>
-                <h5 class="card-title"><?php echo $_SESSION['email'];?></h5>
+                <!-- <h5 class="card-title"><?php echo $_SESSION['email']; ?></h5> -->
                 <!-- Vertical Form -->
-                <form class="row g-3" action="add-ques.php" method="POST">
+                <form class="row g-3" action="" method="POST">
                   <div class="col-12">
                     <label for="inputNanme4" class="form-label">Title</label>
                     <input type="text" name="title" class="form-control" id="inputNanme4">
+                    <div class="a"><?php if (isset($examerror['title'])) {
+                      echo $examerror['title'];
+                    } ?></div>
                   </div>
                   <div class="col-12">
                     <label for="inputNanme4" class="form-label">Description</label>
-                    <textarea name="text" class="form-control" cols="20" rows="5"></textarea>
+                    <!-- <textarea name="text" name="desc" id="inputNanme4" class="form-control" cols="20" rows="5"></textarea> -->
+                    <input type="text" name="desc" id="inputNanme4" class="form-control">
+                    <div class="a"><?php if (isset($examerror['desc'])) {
+                      echo $examerror['desc'];
+                    } ?></div>
                   </div>
 
-                  <div class="col-12">
-                    <label for="inputState" class="form-label">Subject</label>
-                    <select id="inputState" class="form-select">
-                      <option selected>Choose...</option>
-                      <option>Fundamental of Programming</option>
-                      <option>Open - source Web Programming</option>
-                      <option>Database Management System</option>
-                      <option>Advanced Mathematics for Computer Applications</option>
-                    </select>
-                  </div>
+                  <?php
+                  include('connect.php');
 
+                  $student = $con->prepare("SELECT className FROM batch WHERE facId = ?");
+
+                  $student->bind_param('i', $_SESSION['FacId']);
+
+                  $student->execute();
+
+                  $p = $student->get_result();
+
+                  $bdata = $p->fetch_all(MYSQLI_ASSOC);
+
+                  $g = $p->num_rows;
+
+                  ?>
 
                   <div class="col-12">
                     <label for="inputState" class="form-label">Choose Batch</label>
-                    <select id="inputState" class="form-select">
-                      <option selected>Choose...</option>
-                      <option>Batch2018</option>
-                      <option>Batch2019</option>
-                      <option>Batch2020</option>
-                      <option>Batch2021</option>
+                    <select id="inputState" name="batch" class="form-select">
+                      <option selected value="choose">Choose...</option>
+                      <?php for ($i = 0; $i < $g; $i++) : ?>
+                        <option value="<?php echo $bdata[$i]['className']; ?>"><?php echo $bdata[$i]['className']; ?></option>
+                      <?php endfor; ?>
+
                     </select>
+                    <div class="a"><?php if (isset($examerror['batch'])) {
+                      echo $examerror['batch'];
+                    } ?></div>
                   </div>
 
-                  <!-- <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="inputNanme4" class="form-label">Opening Time</label>
-                      <div class='input-group date' id='datetimepicker11'>
-                        <input type='datetime' class="form-control" />
-                        <span class="input-group-addon">
-                          <span class="glyphicon glyphicon-calendar">
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                  </div> -->
 
                   <div class='col-lg-9'>
                     <div class="form-group">
                       <!-- <label for="dtpickerdemo" class="col-sm-2 control-label">Select date/time:</label> -->
-                    <label for="inputNanme4" class="form-label">Select Date:</label>
+                      <label for="inputNanme4" class="form-label">Select Date</label>
 
                       <div class='col-sm-4 input-group date' id='dtpickerdemo'>
-                        <input type='date' class="form-control" />
+                        <input type='date' name="date" id="datepicker" class="form-control" />
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                       </div>
+                      <div class="a"><?php if (isset($examerror['date'])) {
+                      echo $examerror['date'];
+                    } ?></div>
                     </div>
                   </div>
 
-                    <!-- </div> -->
+                  <div class="row mt-3">
 
-                   
-                    <div class="text-center">
-                      <button type="submit" name="addQuiz" class="btn btn-primary">Add Quiz</button>
-                      <button type="reset" class="btn btn-secondary">Reset</button>
+                    <div class="col-6 ">
+                      <label for="inputMDEx1" class="form-label bold">Choose start time </label>
+                      <input type="time" name="stime" id="inputMDEx1" class="form-control">
+                      <div class="a"><?php if (isset($examerror['stime'])) {
+                      echo $examerror['stime'];
+                    } ?></div>
                     </div>
+
+                    <div class="col-6">
+                      <label for="inputMDEx2" class="form-label bold">Choose end time </label>
+                      <input type="time" name="etime" id="inputMDEx2" class="form-control">
+                      <div class="a"><?php if (isset($examerror['etime'])) {
+                      echo $examerror['etime'];
+                    } ?></div>
+                    </div>
+                    
+
+                  </div>
+
+                  <div class="col-12">
+                    <label for="totalmark" class="form-label bold">Total marks</label>
+                    <input type="number" name="tmark" id="totalmark" class="form-control">
+                    <div class="a"><?php if (isset($examerror['tmark'])) {
+                      echo $examerror['tmark'];
+                    } ?></div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="inputState" class="form-label bold">Is Active?</label>
+                    <select id="inputState" name="active" class="form-select">
+                      <option selected value="choose">Choose...</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                    <div class="a"><?php if (isset($examerror['active'])) {
+                      echo $examerror['active'];
+                    } ?></div>
+                  </div>
+
+                  <!-- <?php echo $title; ?> -->
+
+                  <!-- </div> -->
+
+
+                  <div class="text-center">
+                    <button type="submit" name="addQuiz" class="btn btn-primary">Add Quiz</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                  </div>
                 </form><!-- Vertical Form -->
 
               </div>
@@ -184,11 +331,32 @@
     <script type="text/javascript" src="dist/bootstrap-clockpicker.min.js"></script>
     <script type="text/javascript" src="clock/dist/bootstrap-clockpicker.min.js"></script>
     <script type="text/javascript" src="clock/dist/bootstrap"></script>
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
       $(function() {
 
         $('#dtpickerdemo').datetimepicker();
 
+      });
+    </script> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+    <script>
+      $(function() {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+          month = '0' + month.toString();
+        if (day < 10)
+          day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+        // alert(maxDate);
+        $('#datepicker').attr('min', maxDate);
       });
     </script>
     <!-- Template Main JS File -->

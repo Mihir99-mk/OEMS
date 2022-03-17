@@ -1,8 +1,7 @@
 <?php
 session_start();
-if (!$_SESSION['email']) {
-  # code...
-  header('location: login.php');
+if (!$_SESSION['IS_LOGIN']) {
+    header('location: login.php');
 }
 ?>
 <!DOCTYPE html>
@@ -17,21 +16,7 @@ if (!$_SESSION['email']) {
     <link rel="icon" type="image/png" href="https://c.cksource.com/a/1/logos/ckeditor5.png">
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
-<?php
 
-//   if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
-//     echo "Cookie named '" . $cookie_name . "' is not set!";
-
-//     // exit;
-
-//   } else {
-//     // continue;
-//     header('Location: login.php');
-//     exit;
-//     echo "Cookie '" . $cookie_name . "' is set!<br>";
-//     echo "Value is: " . $_COOKIE[$cookie_name];
-//   }
-  ?>
 
 <body data-editor="ClassicEditor" data-collaboration="false" data-revision-history="false">
     <header>

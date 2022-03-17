@@ -1,7 +1,6 @@
 <?php
 session_start();
-if (!$_SESSION['email']) {
-  # code...
+if (!$_SESSION['IS_LOGIN']) {
   header('location: login.php');
 }
 ?>

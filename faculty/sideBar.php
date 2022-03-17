@@ -1,19 +1,4 @@
-<?php
 
-  // if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
-  //   echo "Cookie named '" . $cookie_name . "' is not set!";
-
-  //   // exit;
-
-  // } else {
-
-  //   // continue;
-  //   header('Location: login.php');
-  //   exit;
-  //   echo "Cookie '" . $cookie_name . "' is set!<br>";
-  //   echo "Value is: " . $_COOKIE[$cookie_name];
-  // }
-  ?>
 
 <!-- <header id="header" class="header fixed-top d-flex align-items-center"> -->
 
@@ -52,7 +37,7 @@
         </ul>
       </li><!-- End Components Nav -->
 
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-journal-text"></i><span>Subject</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -68,7 +53,8 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Forms Nav -->
+      </li> -->
+      <!-- End Forms Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">

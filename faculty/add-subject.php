@@ -1,7 +1,6 @@
 <?php
 session_start();
-if (!$_SESSION['email']) {
-  # code...
+if (!$_SESSION['IS_LOGIN']) {
   header('location: login.php');
 }
 ?>
@@ -81,13 +80,6 @@ if (!$_SESSION['email']) {
                   <input type="text" class="form-control" id="inputNanme4">
                 </div>
                 
-                <div class="col-12">
-                  <label for="inputState" class="form-label">Faculty</label>
-                  <select id="inputState" class="form-select">
-                    <option selected>Choose...</option>
-                    <option><?php echo "sanket"?></option>
-                  </select>
-                </div>
                 <div class="col-12">
                   <label for="inputState" class="form-label">Choose Batch</label>
                   <select id="inputState" class="form-select">

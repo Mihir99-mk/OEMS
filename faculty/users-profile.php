@@ -1,7 +1,6 @@
 <?php
 session_start();
-if (!$_SESSION['email']) {
-  # code...
+if (!$_SESSION['IS_LOGIN']) {
   header('location: login.php');
 }
 ?>
@@ -38,22 +37,7 @@ if (!$_SESSION['email']) {
 
 
 </head>
-<?php
-
-  // if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
-  //   echo "Cookie named '" . $cookie_name . "' is not set!";
-
-  //   // exit;
-
-  // } else {
-
-  //   // continue;
-  //   header('Location: login.php');
-  //   exit;
-  //   echo "Cookie '" . $cookie_name . "' is set!<br>";
-  //   echo "Value is: " . $_COOKIE[$cookie_name];
-  // }
-  ?>
+ 
 <body>
 
   <!-- ======= Header ======= -->
@@ -339,8 +323,10 @@ if (!$_SESSION['email']) {
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
 
+
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+ 
 
 </body>
 

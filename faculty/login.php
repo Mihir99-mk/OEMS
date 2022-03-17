@@ -3,9 +3,7 @@ session_start();
 ?>
 <!DOCTYPE php>
 <php lang="en">
-  <?php
-  include('connect.php');
-  ?>
+
 
   <head>
     <meta charset="utf-8">
@@ -48,7 +46,9 @@ session_start();
 
   </head>
   <?php
-  // error_reporting(0);
+
+  $errors = array();
+
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $email = $_POST['email'];
@@ -56,74 +56,83 @@ session_start();
     $d = substr($passwords, 0, 20);
 
 
+
+    include('connect.php');
     if ($con->connect_error) {
       echo "Connection fail" . $con->connect_error;
       exit();
     } else {
-      $sql = "select * from facultyuser where EmailId = '$email' and Password = '$d'";
-      $result = $con->query($sql);
+      $login = $con->prepare("SELECT * FROM facultyuser WHERE EmailId = ? AND Password = ?");
 
-      $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+      $login->bind_param('ss', $email, $d);
+
+      $login->execute();
+
+      $h = $login->get_result();
+
+      $data = $h->fetch_assoc();
 
 
-
-      if ($row['EmailId'] === $email && $row['Password'] === $d) {
-        $_SESSION['email'] = $row['EmailId'];
-        $_SESSION['firstName'] = $row['FirstName'];
-        $_SESSION['lastName'] = $row['LastName'];
-        header("Location: index.php");
-      } else {
-        header("Location: login.php");
-      }
-
-      $errors = array();
+      var_dump($data);
 
 
 
-      if ($email != $row['EmailId']) {
-        $errors['e1'] = "Invaild email address";
-      }
-
-      if ($row['Password'] != $d) {
-        $errors['p1'] = "Invaild password";
-      }
+      echo $data['Password'] . "<br>";
 
 
-
-
-
-
-
-      $result->free_result();
-      $con->close();
+      echo $loginId;
     }
   }
 
+  if (empty($email)) {
+    $vaild = false;
+    $errors['e1'] = "Please enter your email.";
+  } else if ($email != $data['EmailId']) {
+    $vaild = false;
+    $errors['e2'] = "Invaild email address";
+  } else if (empty($d)) {
+    $vaild = false;
+    $errors['p1'] = "Please enter your password.";
+  } else if ($d != $data['Password']) {
+    $vaild = false;
+    $errors['p2'] = "Invaild password";
+  } elseif ($data['EmailId'] === $email && $data['Password'] === $d) {
 
+    $datetime = new DateTime();
+    $datetime->format('m/d/Y g:i A');
 
-  if (isset($_POST['register'])) {
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $email = $_POST['email'];
-    $passwords = md5($_POST['passwords']);
-    // $hash = password_hash($passwords, PASSWORD_DEFAULT);
-
-    // $con = new mysqli('localhost', 'root', '', 'college');
-    if ($con->connect_error) {
-      echo "Connection fail" . $con->connect_error;
+    if (isset($_POST['remember'])) {
+      setcookie('email', $email, time() + (60 * 60 * 24 * 30));
+      setcookie('datetime', $datetime, time() + (60 * 60 * 24 * 30));
     } else {
-      $sql = "INSERT INTO facultyuser " .
-        "(FirstName, LastName, EmailId, Password) " . "VALUES " .
-        "('$firstName', '$lastName', '$email', '$passwords')";
-      if ($con->query($sql)) {
-        printf("New record created successfully");
-        header("Location: login.php");
-      } else {
-        echo "Error: " . $sql . "<br>" . $con->error;
-      }
-      $con->close();
+      setcookie('email', "");
+      // setcookie('password', "");
     }
+    $_SESSION['IS_LOGIN'] = 'yes';
+    // header('location: get.php');
+
+
+    $_SESSION['email'] = $data['EmailId'];
+    $_SESSION['firstName'] = $data['FirstName'];
+    $_SESSION['lastName'] = $data['LastName'];
+    $_SESSION['FacId'] = $data['FacId'];
+    header("Location: index.php");
+  } else {
+    header("Location: login.php");
   }
+
+  $e_c = '';
+  // $p_c = '';
+  $s_r = '';
+
+  if (isset($_COOKIE['email'])) {
+    $e_c = $_COOKIE['email'];
+    $s_r = "checked='checked'";
+  }
+
+
+
+
   ?>
 
   <?php
@@ -150,15 +159,15 @@ session_start();
                       <p class="text-center small">Enter your username & password to login</p>
                     </div>
 
-                    <form class="row g-3 needs-validation" method="POST" action="login.php" novalidate>
+                    <form class="row g-3 needs-validation" method="POST" action="" novalidate>
 
                       <div class="col-12">
                         <label for="yourUsername" class="form-label">Email</label>
                         <div class="input-group has-validation">
                           <span class="input-group-text" id="inputGroupPrepend">@</span>
-                          <input type="email" name="email" class="form-control" id="yourUsername" required>
-                          <div class="invalid-feedback">Please enter your email.</div>
-                          <div class="error"><?php if (isset($errors['e1'])) echo $errors['e1']; ?></div>
+                          <input type="email" name="email" class="form-control" value="<?php if (isset($e_c)) echo $e_c; ?>" id="yourUsername" required>
+                          <!-- <div class=""><?php if (isset($errors['e1'])) echo $errors['e1']; ?></div> -->
+                          
 
                         </div>
                       </div>
@@ -173,13 +182,13 @@ session_start();
 
                       <div class="col-12">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
+                          <input class="form-check-input" type="checkbox" name="remember" id="rememberMe" <?php if (isset($s_r)) echo $s_r; ?>>
                           <label class="form-check-label" for="rememberMe">Remember me</label>
                         </div>
                       </div>
 
                       <div class="col-12">
-                        <button class="btn btn-primary w-100" type="submit" name="loginbtn" class="loginbtn">Login</button>
+                        <input class="btn btn-primary w-100" type="submit" name="login" class="loginbtn" value="Login" />
                       </div>
                       <div class="col-12">
                         <p class="small mb-0">Don't have account? <a href="register.php">Create an account</a></p>

@@ -48,7 +48,7 @@
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="users-profile.php">
                     <img src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/50/000000/external-user-interface-kiranshastry-solid-kiranshastry-1.png" alt="Profile" class="rounded-circle"/>
-                    <span class="d-none d-md-block  ps-2"><?php echo $_SESSION['firstName']; ?></span>
+                    <span class="d-none d-md-block ps-2">Welcome   <?php echo $_SESSION['firstName']." ".$_SESSION['lastName']; ?>!</span>
                     <!-- <h5 class="card-title"></h5> -->
                 </a><!-- End Profile Iamge Icon -->
             </li><!-- End Profile Nav -->

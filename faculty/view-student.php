@@ -1,7 +1,6 @@
 <?php
 session_start();
-if (!$_SESSION['email']) {
-  # code...
+if (!$_SESSION['IS_LOGIN']) {
   header('location: login.php');
 }
 ?>
@@ -12,7 +11,7 @@ if (!$_SESSION['email']) {
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Tables / General - NiceAdmin Bootstrap Template</title>
+  <title>Students details</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 

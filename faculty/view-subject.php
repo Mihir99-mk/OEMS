@@ -1,7 +1,6 @@
 <?php
 session_start();
-if (!$_SESSION['email']) {
-  # code...
+if (!$_SESSION['IS_LOGIN']) {
   header('location: login.php');
 }
 ?>
@@ -12,7 +11,7 @@ if (!$_SESSION['email']) {
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>View Subject</title>
+  <title>Subject details</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -38,22 +37,7 @@ if (!$_SESSION['email']) {
 
 
 </head>
-<?php
 
-  // if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
-  //   echo "Cookie named '" . $cookie_name . "' is not set!";
-
-  //   // exit;
-
-  // } else {
-
-  //   // continue;
-  //   header('Location: login.php');
-  //   exit;
-  //   echo "Cookie '" . $cookie_name . "' is set!<br>";
-  //   echo "Value is: " . $_COOKIE[$cookie_name];
-  // }
-  ?>
 <body>
 
   <!-- ======= Header ======= -->

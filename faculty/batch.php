@@ -1,7 +1,6 @@
 <?php
 session_start();
-if (!$_SESSION['email']) {
-  # code...
+if (!$_SESSION['IS_LOGIN']) {
   header('location: login.php');
 }
 ?>
@@ -41,23 +40,67 @@ if (!$_SESSION['email']) {
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
 
+    <style>
+      .a{
+        color: red;
+      }
+    </style>
+
 
   </head>
   <?php
 
-  // if (isset($_COOKIE[$cookie_name]) != $cookie_name) {
-  //   echo "Cookie named '" . $cookie_name . "' is not set!";
 
-  //   // exit;
+  $batcherrors = array();
 
-  // } else {
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $cname = $_POST['classname'];
+    $year = $_POST['year'];
 
-  //   // continue;
-  //   header('Location: login.php');
-  //   exit;
-  //   echo "Cookie '" . $cookie_name . "' is set!<br>";
-  //   echo "Value is: " . $_COOKIE[$cookie_name];
-  // }
+    $batchvaild = true;
+
+    if (empty($cname)) {
+      $batchvaild = false;
+      $batcherrors['cn1'] = "class name cannot be empty";
+    }
+
+    if (empty($year)) {
+      $batchvaild = false;
+      $batcherrors['y1'] = "year cannot be empty";
+    }
+
+    if ($batchvaild) {
+      
+
+    include('connect.php');
+    if ($con->connect_error) {
+      echo "Connection fail" . $con->connect_error;
+    } else {
+      echo "sucess";
+
+      $batch = $con -> prepare("INSERT INTO batch(facId, className, years) VALUES (?, ?, ?)");
+
+      $batch -> bind_param('iss', $_SESSION['FacId'], $cname, $year );
+
+      $batch -> execute();
+
+      $batchId = $batch -> insert_id;
+
+      // SELECT batch.facId FROM quiz, batch, facultyuser WHERE QId = 15 AND batch.facId = 4 AND quiz.bid = batch.bid 
+
+      
+
+
+
+
+      $_SESSION['batchId'] = $batchId;
+
+    }
+  }
+
+    
+  }
+
   ?>
 
   <body>
@@ -79,7 +122,8 @@ if (!$_SESSION['email']) {
             <li class="breadcrumb-item active">Add Batch</li>
           </ol>
         </nav>
-      </div><!-- End Page Title -->
+      </div>
+
       <section class="section">
         <div class="row">
 
@@ -91,29 +135,30 @@ if (!$_SESSION['email']) {
                 <h5 class="card-title">Add Batch</h5>
 
                 <!-- Vertical Form -->
-                <form class="row g-3">
+                <form class="row g-3" method="POST" novalidate>
                   <div class="col-12">
                     <label for="inputNanme4" class="form-label">Batch Name</label>
-                    <input type="text" class="form-control" id="inputNanme4">
+                    <input type="text" name="classname" class="form-control" id="inputNanme4" required>
+                    <div class="a"> <?php if (isset($batcherrors['cn1'])) {
+                      echo $batcherrors['cn1'];
+                    } ?> </div>
                   </div>
 
                   <div class="col-4">
                     <label for="inputNanme4" class="form-label">Batch Year</label>
-                    <input type="text" class="form-control" id="datepicker">
+                    <input type="text" name="year" class="form-control" id="datepicker">
+                    <div class="a"> <?php if (isset($batcherrors['y1'])) {
+                      echo $batcherrors['y1'];
+                    } ?> </div>
 
                   </div>
-
-
-
-
-
-
 
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>
                   </div>
-                </form><!-- Vertical Form -->
+                </form>
+                <!-- Vertical Form -->
 
               </div>
             </div>
