@@ -8,6 +8,7 @@ interface AdminInterface
     function assignSubject($facId, $subId);
     function viewFaculty($adminId);
     function viewSubject($adminId);
+    function viewCourse($adminId);
     function manageCourse($adminId, $cId, $subId);
     function manageFaculty($adminId, $facId, $subId);
     function viewStudentProfile($adminId, $stuId);
@@ -19,7 +20,7 @@ interface AdminInterface
 
 class AdminService implements AdminInterface
 {
-    
+
     public function login($username, $password)
     {
         $con = Database::connection();
@@ -44,11 +45,11 @@ class AdminService implements AdminInterface
         }
     }
 
-    public function student($adminId, $fname, $lname, $address, $phoneno, $email, $password, $gender,  $img, $dob)
+    public function student($adminId, $fname, $lname, $address, $phoneno, $email, $cId, $password, $gender,  $img, $dob)
     {
         $con = Database::connection();
-        $query = $con->prepare("INSERT INTO `student`(`adminId`, `fname`, `lname`, `address`, `phoneno`, `email`, `password`, `Gender`, `profileImg`,  `dob`) VALUES (?,?,?,?,?,?,?,?,?,?)");
-        $query->bind_param('isssssssss', $adminId, $fname, $lname, $address, $phoneno, $email, $password, $gender, $img, $dob);
+        $query = $con->prepare("INSERT INTO `student`(`adminId`, `fname`, `lname`, `address`, `phoneno`, `email`, `cId`, `password`, `Gender`, `profileImg`, `dob`) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+        $query->bind_param('isssssissss', $adminId, $fname, $lname, $address, $phoneno, $email, $cId, $password, $gender, $img, $dob);
         if ($query->execute()) {
             return 0;
         } else {
@@ -167,6 +168,8 @@ class AdminService implements AdminInterface
         return json_encode($json);
     }
 
+
+
     public function viewFacultyProfile($adminId, $facId)
     {
         $con = Database::connection();
@@ -224,7 +227,19 @@ class AdminService implements AdminInterface
         $result = $query->get_result();
         $json = $result->fetch_all(MYSQLI_ASSOC);
 
-        return json_encode($json);
+        return $json;
+    }
+
+    public function viewCourseName($cId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `course` WHERE cId=?");
+        $query->bind_param('i', $cId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $json;
     }
 
     public function viewStudent($adminId)

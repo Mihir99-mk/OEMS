@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php session_start();
-include_once("../../services/admin/Adminservice.php");
-if ($_SESSION['IS_FAC_LOGIN'] != true) {
+<?php 
+
+session_start();
+include_once("../../services/students/Studentservice.php");
+if ($_SESSION['IS_STUD_LOGIN'] != true) {
     header("Location: ./login.php");
 }
 
@@ -69,20 +71,10 @@ if ($_SESSION['IS_FAC_LOGIN'] != true) {
                 <?php include 'sidebar.php'; ?>
 
 
-                <!-- End Sidebar -->
-
-                <div class="clearfix"></div>
-
             </div>
-            <!-- Sidebar -left -->
-
+            
         </div>
-        <!-- Left Sidebar End -->
-
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
-
+       
         <div class="content-page">
             <div class="content">
                 <!-- Topbar Start -->
@@ -103,7 +95,7 @@ if ($_SESSION['IS_FAC_LOGIN'] != true) {
                             <div class="page-title-right">
 
 
-                                <h4 class="page-title">Dashboard</h4>
+                                <h4 class="page-title">View Course Details</h4>
                             </div>
                         </div>
                     </div>
@@ -113,50 +105,51 @@ if ($_SESSION['IS_FAC_LOGIN'] != true) {
 
                         <div class="col-lg-8">
 
-
-                            <?php
-                            $Admin = new AdminService();
-                            $adminId = $_SESSION["adminId"];
-                            $data = $Admin->viewCourse($adminId);
-                            $jdata = json_decode($data, true);
-
-
-
-                            ?>
-
-
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">View Course</h5>
                                     <table id="myTable" class="display">
+                                        <?php 
                                         
+                                        
+                                        
+                                        ?>
+
+
+
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Course Name</th>
-                                                <th>Update</th>
-                                                <th>Delete</th>
+                                                <th>Subject Name</th>
+                                                <th>Subject Description</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            
-                                            <?php
-                                                foreach ($jdata as $key => $val) {
 
-                                                ?><tr>
-                                                    <td><?php echo $key+1; ?></td>
-                                                    <td><?php echo $val["courseName"]; ?></td>
-                                                    <td><a href="course-update.php?uid=<?php echo $val["cId"]; ?>"  class="btn btn-primary">Update</a></td>
-                                                    <td><a href="course-delete.php?did=<?php echo $val["cId"]; ?>"  class="btn btn-danger">Delete</a></td>
-                                                    </tr>
+                                            <?php
+                                            $facId = $_SESSION["facId"];
+                                            $faculty = new FacultyService();
+
+
+                                            $datas = $faculty->getSubject($facId);
+                                            foreach ($datas as $k => $v) {
+                                                $dt = $faculty->getSubjectName($v["subId"]);
+                                                foreach ($dt as $val) {
+
+                                            ?><tr>
+                                                        <td><?php echo $k+1; ?></td>
+                                                        <td><?php echo $val["subName"]; ?></td>
+                                                        <td><?php echo $val["subDesc"]; ?></td>
+
                                                 <?php
 
                                                 }
+                                            }
+
 
                                                 ?>
-                                               
-                                            
-                                            
+
+
+
                                         </tbody>
                                     </table>
 
@@ -198,10 +191,6 @@ if ($_SESSION['IS_FAC_LOGIN'] != true) {
         <!-- end Footer -->
 
     </div>
-
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
 
 
     </div>

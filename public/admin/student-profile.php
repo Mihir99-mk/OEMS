@@ -32,19 +32,18 @@ $pid = $_GET["sid"];
         }
 
         #img {
-            height: 200px;
+            height: 320px;
         }
 
-        .pr{
+        .pr {
             display: flex;
         }
 
-        legend{
-            background-color: #000;
-    color: #fff;
-    padding: 3px 6px;
+        legend {
+            background-color: #173740;
+            color: #fff;
+            padding: 3px 6px;
         }
-        
     </style>
 
 </head>
@@ -139,58 +138,106 @@ $pid = $_GET["sid"];
 
                     <!-- <div class="row"> -->
 
-                        <div class="card" style="color: black;">
-                            <div class="card-body">
-                                <div class="row pr">
-                                    <div class="col-lg-8">
-                                        <fieldset>
-                                            <legend>Name</legend>
-                                            <div>
-                                                <?php foreach ($jdata as $val) { ?>
-                                                    <h4>First Name - <?php echo $val["fname"]; ?></h4>
-                                                    <h4>Last Name - <?php echo $val["lname"]; ?></h4>
-                                                <?php } ?>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset>
-                                            <legend>
-                                                Personal Detail
-                                            </legend>
+                    <div class="card" style="color: black;">
+                        <div class="card-body">
+                            <div class="row pr">
+                                <div class="col-lg-8">
+                                    <fieldset>
+                                        <legend>Name</legend>
+                                        <div>
+                                            <?php foreach ($jdata as $val) { ?>
+                                                <h4>First Name - <?php echo $val["fname"]; ?></h4>
+                                                <h4>Last Name - <?php echo $val["lname"]; ?></h4>
+                                            <?php } ?>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>
+                                            Personal Detail
+                                        </legend>
 
-                                                <div>
-                                                    <?php foreach ($jdata as $val) { ?>
-                                                        <h4>Address - <?php echo $val["address"]; ?></h4>
-                                                        <h4>Phone - <?php echo $val["phoneno"]; ?></h4>
-                                                        <h4>username - <?php echo $val["email"]; ?></h4>
-                                                        <h4>Gender - <?php echo $val["Gender"]; ?></h4>
-                                                        <h4>Birth of date - <?php echo $val["dob"]; ?></h4>
-                                                    <?php } ?>
-                                                </div>
-                                        </fieldset>
-                                        
-                                        <fieldset>
-                                            <legend>
-                                                Enroll Detail
-                                            </legend>
+                                        <div>
+                                            <?php foreach ($jdata as $val) { ?>
+                                                <h4>Address - <?php echo $val["address"]; ?></h4>
+                                                <h4>Phone - <?php echo $val["phoneno"]; ?></h4>
+                                                <h4>Email - <?php echo $val["email"]; ?></h4>
+                                                <h4>Gender - <?php echo $val["Gender"]; ?></h4>
+                                                <h4>Birth of date - <?php echo $val["dob"]; ?></h4>
+                                            <?php } ?>
+                                        </div>
+                                    </fieldset>
 
-                                                <div>
-                                                    <?php foreach ($jdata as $val) { ?>
-                                                        <h4>Enroll In - <?php echo $val["enrollDate"]; ?></h4>
+                                    <fieldset>
+                                        <legend>
+                                            Enroll Detail
+                                        </legend>
 
-                                                    <?php } ?>
-                                                </div>
-                                        </fieldset>
-                                    </div>
+                                        <div>
+                                            <?php
 
-                                    <div class="col-lg-2">
-                                        <div class="px-5 py-5"><?php foreach ($jdata as $val) { ?>
+                                            foreach ($jdata as $val) {
+
+                                            ?>
+                                                <h4>Enroll Date - <?php echo $val["enrollDate"]; ?></h4>
+
+                                            <?php } ?>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>
+                                            Enroll Course
+                                        </legend>
+
+                                        <div>
+                                            <?php foreach ($jdata as $val) {
+
+                                                $course = new AdminService();
+                                                $dt = $course->viewCourseName($val["cId"]);
+                                                foreach ($dt as $v) {
+                                            ?>
+                                                    <h4>Course Name - <?php echo $v["courseName"]; ?></h4>
+
+                                            <?php }
+                                            } ?>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <legend>
+                                            Enroll Subject
+                                        </legend>
+
+                                        <div>
+                                            <?php
+                                            
+                                            foreach ($jdata as $val) {
+                                                $adminId = $_SESSION["adminId"];
+                                                $mgdata = $Admin->viewmanagesubject($val["cId"], $adminId);
+                                               
+                                                foreach ($mgdata as $k => $data) {
+                                                    $subId = $data["subId"];
+                                                    $msdata = $Admin->viewsubjectsfromcourse($subId, $adminId);
+                                                    foreach ($msdata as $vdata) {
+                                                
+                                            ?>
+                                                    <h4>Subject Name - <?php echo $vdata["subName"]; ?></h4>
+
+                                            <?php }
+                                            } }?>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <div class="px-5 py-5"><?php foreach ($jdata as $val) { ?>
                                             <img src="<?php echo $val["profileImg"]; ?>" class="rounded float-right" id="img" alt="...">
-                                        <?php } ?></div>
-                                        
+                                        <?php } ?>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
+                    </div>
 
 
                     <!-- </div>  -->

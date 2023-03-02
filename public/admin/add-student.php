@@ -128,6 +128,7 @@ error_reporting(0);
                             $password = $_POST['password'];
                             $gender = $_POST['gender'];
                             $dob = $_POST['dob'];
+                            $course = $_POST['course'];
 
                             $target_dir = "uploads/";
                             $target_file = $target_dir . basename($_FILES["img"]["name"]);
@@ -176,6 +177,11 @@ error_reporting(0);
                                 $Facultyerrors['cn7'] = "Gender cannot be empty";
                             }
 
+                            if (empty($course)) {
+                                $Facvaild = false;
+                                $Facultyerrors['cn90'] = "Course cannot be empty please select the course!!";
+                            }
+
 
                             if (file_exists($target_file)) {
                                 $Facvaild = false;
@@ -201,11 +207,11 @@ error_reporting(0);
                             if ($Facvaild) {
                                 $Admin = new AdminService();
                                 $adminId = $_SESSION["adminId"];
-                                $data = $Admin->student($adminId, $fname, $lname, $address, $phoneno, $email, $password, $gender, $target_file, $dob);
+                                $data = $Admin->student($adminId, $fname, $lname, $address, $phoneno, $email,$course, $password, $gender, $target_file, $dob);
                                 $name = $fname . " " . $lname;
 
                                 $mail = new sendMail();
-                                $mail->mail($name,$email,$password);
+                                $mail->mail($name, $email, $password);
 
 
 
@@ -299,6 +305,28 @@ error_reporting(0);
                                             <input type="email" name="email" class="form-control" id="inputNanme4" required>
                                             <div class="a"> <?php if (isset($Facultyerrors['cn5'])) {
                                                                 echo $Facultyerrors['cn5'];
+                                                            } ?> </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="inputNanme4" class="form-label">Select Course</label>
+                                            <select class="form-control" name="course" id="inputNanme4">
+                                                <option value="" selected>Select Course</option>
+                                                <?php
+                                                $adminId = $_SESSION["adminId"];
+                                                $course = new AdminService();
+                                                $dt = $course->viewCourse($adminId);
+
+                                                foreach ($dt as $val) {
+                                                ?>
+                                                    <option value="<?php echo $val["cId"] ?>"><?php echo $val["courseName"] ?></option>
+                                                <?php
+                                                }
+                                                ?>
+
+                                            </select>
+
+                                            <div class="a"> <?php if (isset($Facultyerrors['cn90'])) {
+                                                                echo $Facultyerrors['cn90'];
                                                             } ?> </div>
                                         </div>
                                         <div class="col-12">

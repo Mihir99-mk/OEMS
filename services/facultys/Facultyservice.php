@@ -61,26 +61,77 @@ class FacultyService implements facultyInterface
         return $sjson;
     }
 
-    // public function student($facId, $name, $email, $password)
-    // {
-    //     $db = new Database();
-    // $con = $db->connection();
-    //     $query = $con->prepare("INSERT INTO `student`(`facId`, `studName`, `email`, `password`) VALUES (?,?,?,?)");
-    //     $query->bind_param('isss', $facId,$name, $email, $password);
-    //     $query->execute();
-    //     if ($query->execute()) {
-    //         return 0;
-    //     }else{
-    //         return 1;
-    //     }
-    // }
-}
-$admin = new FacultyService();
-$datas = $admin->getSubject(16);
-foreach ($datas as $v) {
-$dt = $admin->getSubjectName($v["subId"]);
+    public function configQuiz($facId,$qname, $qdesc, $subId,$data,$stime,$etime,$noofques,$eachmark)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("INSERT INTO `configquiz`(`facId`, `qname`, `qdesc`, `subId`, `date`, `startTime`, `endTime`, `noofques`, `eachMark`) VALUES (?,?,?,?,?,?,?,?,?)");
+        $query->bind_param('ississsii', $facId,$qname, $qdesc, $subId,$data,$stime,$etime,$noofques,$eachmark);
+        if ($query->execute()) {
+            return 0;
+        }else{
+            return 1;
+        }
+    }
 
-    print_r($dt[0]["subName"]);
+    public function viewQuiz($facId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `configquiz` WHERE facId=?");
+        $query->bind_param('i', $facId);
+        $query->execute();
+        $sresult = $query->get_result();
+        $sjson = $sresult->fetch_all(MYSQLI_ASSOC);
+
+        return $sjson;
+    }
+
+    public function viewQuizwithquizId($quizId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `configquiz` WHERE quizId=?");
+        $query->bind_param('i', $quizId);
+        $query->execute();
+        $sresult = $query->get_result();
+        $sjson = $sresult->fetch_all(MYSQLI_ASSOC);
+
+        return $sjson;
+    }
+
+    public function viewQuizQues($quizId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `questions` WHERE quizId=?");
+        $query->bind_param('i', $quizId);
+        $query->execute();
+        $sresult = $query->get_result();
+        $sjson = $sresult->fetch_all(MYSQLI_ASSOC);
+
+        return $sjson;
+    }
+
+    public function deleteQuiz($quizId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("DELETE FROM `configquiz` WHERE quizId=?");
+        $query->bind_param('i', $quizId);
+        if ($query->execute()) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    public function addQuestion($quizId,$facId,$ques,$opt1,$opt2,$opt3,$opt4,$answer)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("INSERT INTO `questions`(`quizId`, `facId`, `question`, `opt1`, `opt2`, `opt3`, `opt4`, `answer`) VALUES (?,?,?,?,?,?,?,?)");
+        $query->bind_param('iissssss', $quizId,$facId,$ques,$opt1,$opt2,$opt3,$opt4,$answer);
+        if ($query->execute()) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 }
 
 

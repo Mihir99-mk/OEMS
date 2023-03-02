@@ -10,16 +10,34 @@
     <li class="side-nav-item">
         <a data-bs-toggle="collapse" href="#sidebarCourse" aria-expanded="false" aria-controls="sidebarCourse" class="side-nav-link">
             <i class="uil-clipboard-alt"></i>
-            <span> Course </span>
+            <span> Subject </span>
             <span class="menu-arrow"></span>
         </a>
         <div class="collapse" id="sidebarCourse">
             <ul class="side-nav-second-level">
                 <li>
-                    <a href="enroll-course.php">Enroll Course</a>
+                    <a href="enroll-subject.php">Enroll Subject</a>
                 </li>
-                
             </ul>
+        </div>
+    </li>
+
+    <li class="side-nav-item">
+        <a data-bs-toggle="collapse" href="#sidebarquiz" aria-expanded="false" aria-controls="sidebarquiz" class="side-nav-link">
+            <i class="uil-clipboard-alt"></i>
+            <span> Quiz </span>
+            <span class="menu-arrow"></span>
+        </a>
+        <div class="collapse" id="sidebarquiz">
+            <ul class="side-nav-second-level">
+                <li>
+                    <a href="config-quiz.php"> Configure Quiz</a>
+                </li>
+                <li>
+                    <a href="view-quiz.php"> View Quiz</a>
+                </li>
+            </ul>
+
         </div>
     </li>
 

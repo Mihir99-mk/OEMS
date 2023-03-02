@@ -94,8 +94,8 @@ error_reporting(0);
 
                 $Admin = new AdminService();
                 $adminId = $_SESSION["adminId"];
-                $data = $Admin->viewCourse($adminId);
-                $jdata = json_decode($data, true);
+                $jdata = $Admin->viewCourse($adminId);
+                // $jdata = json_decode($data, true);
 
                 $data1 = $Admin->viewSubject($adminId);
                 $jdata1 = json_decode($data1, true);

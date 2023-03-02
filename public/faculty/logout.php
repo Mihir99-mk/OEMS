@@ -3,7 +3,7 @@
 session_start();
 if (isset($_SESSION['IS_FAC_LOGIN'])) {
     // unset($_SESSION['FacId']);
-    unset($_COOKIE['IS_FAC_LOGIN']);
+    unset($_SESSION['IS_FAC_LOGIN']);
     session_destroy();
     header("Location: ./login.php");
 } 
