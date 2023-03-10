@@ -66,8 +66,8 @@ if ($_SESSION['IS_LOGIN'] != true) {
 
                     //view course
                     $couData = $admin->viewCourse($adminId);
-                    $cdata = json_decode($couData, true);
-                    $ccount = count($cdata);
+                    // $cdata = json_decode($couData, true);
+                    $ccount = count($couData);
 
                     //view subject
                     $subData = $admin->viewSubject($adminId);

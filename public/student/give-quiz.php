@@ -7,6 +7,13 @@ include_once("../../services/students/Studentservice.php");
 if ($_SESSION['IS_STUD_LOGIN'] != true) {
     header("Location: ./login.php");
 }
+// if (isset($_POST["submit"])) {
+//     header("Location: result.php");
+//     foreach ($dh as $v) {
+//         print_r($v);
+
+//     }
+// }
 $studId = $_SESSION["studId"];
 $student = new StudentService();
 
@@ -37,6 +44,10 @@ $quizId = $_GET["qid"];
     <style>
         .a {
             color: red;
+        }
+
+        .page-link page-item {
+            cursor: pointer;
         }
     </style>
 
@@ -70,21 +81,14 @@ $quizId = $_GET["qid"];
 
             <div class="h-100" id="leftside-menu-container" data-simplebar="">
 
-                <!--- Sidemenu -->
                 <?php include 'sidebar.php'; ?>
 
-
-                <!-- End Sidebar -->
 
                 <div class="clearfix"></div>
 
             </div>
-            <!-- Sidebar -left -->
 
         </div>
-        <!-- Left Sidebar End -->
-
-
 
         <div class="content-page">
             <div class="content">
@@ -103,21 +107,20 @@ $quizId = $_GET["qid"];
                         </div>
                     </div>
 
+
                     <div class="row">
-
-                        <div class="col-xl-4 col-md-6">
-
-                            <div class="card card-h-50">
-
-                                <div class="card-body">
-
-                                </div>
+                        <div>
+                            <div class="col-xl-4 col-md-6" id="main-data">
 
                             </div>
                         </div>
                     </div>
 
                 </div>
+                <!-- 
+                <div class="container-fluid" id="result">
+
+                </div> -->
 
             </div>
 
@@ -133,7 +136,6 @@ $quizId = $_GET["qid"];
                     </div>
                 </div>
             </footer>
-            <!-- end Footer -->
 
         </div>
 
@@ -143,20 +145,81 @@ $quizId = $_GET["qid"];
     <script src="assets/js/vendor.min.js"></script>
     <script src="assets/js/app.min.js"></script>
 
-    <!-- third party js -->
-    <script src="assets/js/vendor/apexcharts.min.js"></script>
     <script src="assets/js/vendor/jquery-jvectormap-1.2.2.min.js"></script>
     <script src="assets/js/vendor/jquery-jvectormap-world-mill-en.js"></script>
-    <!-- third party js ends -->
-
-    <!-- demo app -->
-    <script src="assets/js/pages/demo.dashboard.js"></script>
-    <!-- end demo js-->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://unpkg.com/ionicons@latest/dist/ionicons.js"></script>
 
+    <script>
+        // $(document).ready(function() {
 
+
+
+
+        function fm(page) {
+            $.ajax({
+                url: "ques-page.php",
+                type: "GET",
+                data: {
+                    qid: <?php echo $quizId; ?>,
+                    page: page ? page : 1
+                },
+                success: function(data) {
+                    $("#main-data").html(data)
+
+                },
+                error: function(err) {
+                    console.log("occur : " + err)
+                }
+            })
+
+
+        }
+
+        fm()
+
+        function read(p, v) {
+            $.ajax({
+                url: "save-answer.php",
+                type: "GET",
+                data: {
+                    rvalue: v,
+                    quesno: p ? p : 1
+                },
+                success: function(data) {
+                    console.log(data)
+                },
+                error: function(err) {
+                    console.log("occur : " + err)
+                }
+            })
+
+        }
+
+        $(document).on("click", ".page-link", function(e) {
+            e.preventDefault();
+
+            var btn1 = $(this).attr("id")
+
+            fm(btn1)
+
+        })
+
+        $(document).on("click", "#submit", function() {
+            $.ajax({
+                url: "result.php?quizId=<?php echo $quizId; ?>",
+                type: "GET",
+                success: function(data) {
+                    window.location.href = "dashboard.php";
+                    console.log(data)
+                },
+                error: function(err) {
+                    console.log("occur : " + err)
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>

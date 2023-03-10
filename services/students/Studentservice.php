@@ -57,7 +57,78 @@ class StudentService implements StudentInterface
         return $json;
     }
 
+
+    function QuizData($quizId,$offset,$itemperpage)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `questions` WHERE quizId=? LIMIT ?, ?");
+        $query->bind_param('iii', $quizId,$offset,$itemperpage);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $json;
+    }
+
+    function Quiz($quizId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `questions` WHERE quizId=?");
+        $query->bind_param('i', $quizId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $json;
+    }
+
+    function QuizDataCheck($quizId,$quesno)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `questions` WHERE quizId=?  AND quesno=?");
+        $query->bind_param('ii', $quizId,$quesno);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $json;
+    }
+
+    function QuizDataCount($quizId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `questions` WHERE quizId=?");
+        $query->bind_param('i', $quizId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+       
+        return $result->num_rows;
+    }
    
+    function QuizResult($facId,$studId,$quizId,$cans,$wans,$totalques,$totalmark)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("INSERT INTO `result`(`facId`, `studId`, `quizId`, `cansw`, `wansw`, `totalques`, `totalmark`) VALUES (?,?,?,?,?,?,?)");
+        $query->bind_param('iiiiiii', $facId,$studId, $quizId, $cans,$wans,$totalques,$totalmark);
+        if ($query->execute()) {
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+
+    function configquiz($quizId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `configquiz` WHERE quizId=?");
+        $query->bind_param('i', $quizId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+       
+        return $json;
+    }
 
 }
 
