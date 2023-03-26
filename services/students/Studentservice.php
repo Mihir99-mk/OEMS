@@ -82,6 +82,8 @@ class StudentService implements StudentInterface
         return $json;
     }
 
+
+
     function QuizDataCheck($quizId,$quesno)
     {
         $con = Database::connection();
@@ -106,11 +108,11 @@ class StudentService implements StudentInterface
         return $result->num_rows;
     }
    
-    function QuizResult($facId,$studId,$quizId,$cans,$wans,$totalques,$totalmark)
+    function QuizResult($studId,$quizId,$cans,$wans,$totalques,$totalmark)
     {
         $con = Database::connection();
-        $query = $con->prepare("INSERT INTO `result`(`facId`, `studId`, `quizId`, `cansw`, `wansw`, `totalques`, `totalmark`) VALUES (?,?,?,?,?,?,?)");
-        $query->bind_param('iiiiiii', $facId,$studId, $quizId, $cans,$wans,$totalques,$totalmark);
+        $query = $con->prepare("INSERT INTO `result`(`studId`, `quizId`, `cansw`, `wansw`, `totalques`, `totalmark`) VALUES (?,?,?,?,?,?)");
+        $query->bind_param('iiiiii', $studId, $quizId, $cans,$wans,$totalques,$totalmark);
         if ($query->execute()) {
             return 0;
         }else{
@@ -118,11 +120,92 @@ class StudentService implements StudentInterface
         }
     }
 
+    function QuizComplete($quizId,$studId,$complete)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("INSERT INTO `completequiz`(`quizId`, `studId`, `complete`) VALUES (?,?,?)");
+        $query->bind_param('iii',  $quizId,$studId,$complete);
+        if ($query->execute()) {
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+
+    function quizHistory($studId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `result` WHERE studId = ?");
+        $query->bind_param('i', $studId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+       
+        return $json;
+    }
+
+    function quizNameHistory($quizId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `configquiz` WHERE quizId=?");
+        $query->bind_param('i', $quizId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+       
+        return $json;
+    }
+
+    function QuizCompleteCheck($quizId,$studId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `completequiz` WHERE quizId = ? AND studId=?");
+        $query->bind_param('ii', $quizId,$studId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $json;
+    }
+
+
+
+
+    
+    
+
     function configquiz($quizId)
     {
         $con = Database::connection();
         $query = $con->prepare("SELECT * FROM `configquiz` WHERE quizId=?");
         $query->bind_param('i', $quizId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+       
+        return $json;
+    }
+
+    function configquizCheck($quizId,$studId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `completequiz` WHERE quizId =? AND studId=?");
+        $query->bind_param('ii', $quizId,$studId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+       
+        return $json;
+    }
+
+    function quizcheck($studId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `result` 
+        JOIN configquiz on configquiz.quizId = result.quizId
+        JOIN student on student.studId = result.studId
+        WHERE student.studId = ?");
+        $query->bind_param('i', $studId);
         $query->execute();
         $result = $query->get_result();
         $json = $result->fetch_all(MYSQLI_ASSOC);

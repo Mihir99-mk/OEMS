@@ -97,8 +97,6 @@ class AdminService implements AdminInterface
     public function manageCourse($adminId, $cId, $subId)
     {
         $con = Database::connection();
-        $query = $con->prepare("INSERT INTO `managecourse`(`cId`, `subId`, `adminId`) VALUES (?,?,?)");
-        $query->bind_param('iss', $cId, $subId, $adminId);
 
         //
         $query2 = $con->prepare("SELECT * FROM `managecourse` WHERE cId = ? AND subId=? AND adminId = ?");
@@ -109,6 +107,9 @@ class AdminService implements AdminInterface
         if (count($data) != 0) {
             return 2;
         } else {
+            $query = $con->prepare("INSERT INTO `managecourse`(`cId`, `subId`, `adminId`) VALUES (?,?,?)");
+            $query->bind_param('iss', $cId, $subId, $adminId);
+
             if ($query->execute()) {
                 return 0;
             }
@@ -156,6 +157,21 @@ class AdminService implements AdminInterface
         }
     }
 
+
+    public function Chart($cId, $adminId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM managecourse
+        JOIN student ON managecourse.cId = student.cId
+        JOIN subject ON managecourse.subId = subject.subId
+        WHERE managecourse.cId = ? AND managecourse.adminId = ?");
+        $query->bind_param('ii', $cId, $adminId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+        return $json;
+    }
+
     public function viewFaculty($adminId)
     {
         $con = Database::connection();
@@ -168,6 +184,21 @@ class AdminService implements AdminInterface
         return json_encode($json);
     }
 
+    public function checkcId($adminId, $cId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `managecourse` WHERE cId=? and adminId=?");
+        $query->bind_param('ii', $cId, $adminId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+        if (!empty($json)) {
+            return 0;
+        }else{
+            return 1;
+        }
+
+    }
 
 
     public function viewFacultyProfile($adminId, $facId)
@@ -181,6 +212,8 @@ class AdminService implements AdminInterface
 
         return json_encode($json);
     }
+
+
 
     public function viewStudentProfile($adminId, $stuId)
     {
@@ -218,6 +251,18 @@ class AdminService implements AdminInterface
         return json_encode($json);
     }
 
+    public function viewStudentName($adminId, $subId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `subject` WHERE adminId=? AND subId=?");
+        $query->bind_param('ii', $adminId, $subId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $json;
+    }
+
     public function viewCourse($adminId)
     {
         $con = Database::connection();
@@ -234,6 +279,18 @@ class AdminService implements AdminInterface
     {
         $con = Database::connection();
         $query = $con->prepare("SELECT * FROM `course` WHERE cId=?");
+        $query->bind_param('i', $cId);
+        $query->execute();
+        $result = $query->get_result();
+        $json = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $json;
+    }
+
+    public function viewStudentCourse($cId)
+    {
+        $con = Database::connection();
+        $query = $con->prepare("SELECT * FROM `student` WHERE cId=?");
         $query->bind_param('i', $cId);
         $query->execute();
         $result = $query->get_result();

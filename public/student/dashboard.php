@@ -10,8 +10,7 @@ if ($_SESSION['IS_STUD_LOGIN'] != true) {
 $studId = $_SESSION["studId"];
 $student = new StudentService();
 
-
-
+date_default_timezone_set("asia/kolkata");
 ?>
 
 <head>
@@ -37,22 +36,20 @@ $student = new StudentService();
 </head>
 
 <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
-    <!-- Begin page -->
+
     <div class="wrapper">
-        <!-- ========== Left Sidebar Start ========== -->
+
         <?php include_once './wrapper.php';
         ?>
 
         <div class="content-page">
             <div class="content">
-                <!-- Topbar Start -->
-                <?php include 'navbar.php'; ?>
-                <!-- end Topbar -->
 
-                <!-- Start Content-->
+                <?php include 'navbar.php'; ?>
+
                 <div class="container-fluid">
 
-                    <!-- start page title -->
+
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box">
@@ -61,7 +58,7 @@ $student = new StudentService();
                             </div>
                         </div>
                     </div>
-                    <!-- end page title -->
+
 
 
 
@@ -98,8 +95,8 @@ $student = new StudentService();
 
 
                                 </div>
-                            </div> <!-- end card-->
-                        </div> <!-- end col-->
+                            </div>
+                        </div>
                         <div class="col-sm">
                             <div class="card widget-flat">
                                 <div class="card-body">
@@ -126,72 +123,116 @@ $student = new StudentService();
 
 
                 <div class="row p-3">
-                    
-                            <?php
 
-                            $student = new StudentService();
+                    <?php
 
-                            $data = $student->ShowQuiz($studId);
+                    $student = new StudentService();
 
-                            foreach ($data as $d) {
-                            ?>
-                                <div class="col-xl-4 col-md-6">
+                    $data = $student->ShowQuiz($studId);
+                    $checkQuiz = $student->quizcheck($studId);
 
-                                    <div class="card card-h-50">
-                                        <!-- <div class="card"> -->
 
-                                        <div class="card-body">
-                                            <?php
-                                            $faculty = new FacultyService();
-                                            $vi = $faculty->getSubjectName($d["subId"]);
-                                            ?>
-                                            <h2>Quiz Subject name : <span><?php echo $vi[0]["subName"];  ?></h2>
-                                            <h3>Title : <?php echo $d["qname"]; ?></h3>
+                    // $completed = $student->QuizComplete($)
 
-                                            <h4>Description : <?php echo $d["qdesc"]; ?></h4>
-                                            <h5>Date : <?php echo $d["date"]; ?></h5>
+                    foreach ($data as $d) {
 
-                                            <h5>Start Time : <?php echo date('h:i a ', strtotime($d["startTime"])); ?></h5>
-                                            <h5>End Time : <?php echo date('h:i a ', strtotime($d["endTime"])); ?></h5>
-                                            <h5>Total no of questions : <?php echo $d["noofques"]; ?></h5>
-                                            <h5>Each marks of question : <?php echo $d["eachMark"]; ?></h5>
-                                            <?php
-                                            if ($d["publish"] == "TRUE") {
-                                            ?>
-                                                <a href="give-quiz.php?qid=<?php echo $d['quizId']; ?>" class="btn btn-primary ">
-                                                    <i class="fa-sharp fa-solid fa-circle-plus"></i>
-                                                </a>
-                                            <?php
-                                            }else{
-                                                ?>
-                                                <button class="btn btn-primary" disabled><i class="fa-sharp fa-solid fa-circle-plus"></i></button>
+                        $completed = $student->QuizCompleteCheck($d["quizId"], $studId);
 
+                        // print_r($d["date"]);
+                        // echo date("h:i", intval($d["startTime"]));
+
+                        foreach ($completed as $c) {
+
+                            $cmd = $c["quizId"];
+                        }
+
+                        if ($cmd != $d["quizId"]) {
+                            $stime =  date('h:i a ', strtotime($d["startTime"]));
+                            $cstime = date("h:i a");
+                            $etime = date('h:i a ', strtotime($d["endTime"]));
+                            $cdate = $d["date"];
+                            $ccdate = date("Y-m-d");
+
+                            // echo $stime . "||" . $cstime;
+
+
+
+                    ?>
+                            <div class="col-xl-4 col-md-6">
+
+                                <div class="card card-h-50">
+
+                                    <div class="card-body">
+                                        <?php
+                                        $faculty = new FacultyService();
+                                        $vi = $faculty->getSubjectName($d["subId"]);
+
+                                        ?>
+                                        <h2>Quiz Subject name : <span><?php echo $vi[0]["subName"];  ?></h2>
+                                        <h3>Title : <?php echo $d["qname"]; ?></h3>
+
+                                        <h4>Description : <?php echo $d["qdesc"]; ?></h4>
+                                        <h5>Date : <?php echo $d["date"]; ?></h5>
+
+                                        <h5>Start Time : <?php echo date('h:i a ', strtotime($d["startTime"])); ?></h5>
+                                        <h5>End Time : <?php echo date('h:i a ', strtotime($d["endTime"])); ?></h5>
+                                        <h5>Total no of questions : <?php echo $d["noofques"]; ?></h5>
+                                        <h5>Each marks of question : <?php echo $d["eachMark"]; ?></h5>
+                                        <?php
+                                        if ($d["publish"] == "true") {
+                                            if ($stime <= $cstime && $cdate == $ccdate) {
+                                                if ($etime >= $cstime && $cdate == $ccdate) {
+                                                    // } else {
+
+                                        ?>
+                                                    <a href="give-quiz.php?qid=<?php echo $d['quizId']; ?>" class="btn btn-primary ">
+                                                        Attempt
+                                                    </a>
                                                 <?php
+                                                } else {
+                                                ?>
+                                                    <button class="btn btn-primary" disabled>Closed</button>
+                                                <?php
+                                                }
+                                            } else {
+                                                ?>
+                                                <button class="btn btn-primary" disabled>Not Live</button>
+
+                                            <?php
                                             }
+                                        } else {
                                             ?>
+                                            <button class="btn btn-primary" disabled>Attempt</button>
 
+                                        <?php
+                                        }
 
-                                        </div>
+                                        ?>
+
 
                                     </div>
+
                                 </div>
+                            </div>
 
 
 
-                            <?php
-                            }
+                    <?php
+                        } else {
+                        }
+                    }
 
 
-                            ?>
+                    ?>
 
-                      
+
 
                 </div>
 
 
 
             </div>
-            
+
             <footer class="footer">
                 <div class="container-fluid">
                     <div class="row">

@@ -8,7 +8,7 @@ if ($reportname == "course") {
     $Admin = new AdminService();
     $adminId = $_SESSION["adminId"];
     $data = $Admin->viewCourse($adminId);
-    $jdata = json_decode($data, true);
+    $jdata = $data;
 
 ?>
 

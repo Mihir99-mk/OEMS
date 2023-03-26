@@ -5,22 +5,22 @@
             <span> Dashboards </span>
         </a>
     </li>
-  
 
-    <!-- <li class="side-nav-item">
+
+    <li class="side-nav-item">
         <a data-bs-toggle="collapse" href="#sidebarCourse" aria-expanded="false" aria-controls="sidebarCourse" class="side-nav-link">
             <i class="uil-clipboard-alt"></i>
-            <span> Subject </span>
+            <span> Quizs </span>
             <span class="menu-arrow"></span>
         </a>
         <div class="collapse" id="sidebarCourse">
             <ul class="side-nav-second-level">
                 <li>
-                    <a href="enroll-subject.php">Enroll Subject</a>
+                    <a href="quiz-history.php">Quiz History</a>
                 </li>
             </ul>
         </div>
-    </li> -->
+    </li>
 
     <!-- <li class="side-nav-item">
         <a data-bs-toggle="collapse" href="#sidebarquiz" aria-expanded="false" aria-controls="sidebarquiz" class="side-nav-link">

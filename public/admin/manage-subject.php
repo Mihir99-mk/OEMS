@@ -141,10 +141,10 @@ error_reporting(0);
                 $Admin = new AdminService();
                 $adminId = $_SESSION["adminId"];
                 $data = $Admin->viewCourse($adminId);
-                $jdata = json_decode($data, true);
+                // $data = json_decode($data, true);
 
                 $data1 = $Admin->viewSubject($adminId);
-                $jdata1 = json_decode($data1, true);
+                $data1 = json_decode($data1, true);
 
 
 
@@ -214,7 +214,7 @@ error_reporting(0);
 
                                             <select class="form-select" name="coursename" aria-label="Default select example">
                                                 <?php
-                                                foreach ($jdata as $v) {
+                                                foreach ($data as $v) {
                                                 ?>
                                                     <option selected value="<?php echo $v["cId"]; ?>"><?php echo $v["courseName"]; ?></option>
                                                 <?php
@@ -231,7 +231,7 @@ error_reporting(0);
 
                                             <select class="form-select" name="subjectname[]" aria-label="Default select example" multiple>
                                                 <?php
-                                                foreach ($jdata1 as $v) {
+                                                foreach ($data1 as $v) {
                                                 ?>
                                                     <option value="<?php echo $v["subId"]; ?>"><?php echo $v["subName"]; ?></option>
                                                 <?php

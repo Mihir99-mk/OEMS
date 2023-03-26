@@ -7,15 +7,11 @@ include_once("../../services/students/Studentservice.php");
 if ($_SESSION['IS_STUD_LOGIN'] != true) {
     header("Location: ./login.php");
 }
-$_SESSION["exam_start"] = true;
 
-if ($_SESSION["exam_start"] == true) {
-   
 
 $studId = $_SESSION["studId"];
 $student = new StudentService();
 
-$quizId = $_GET["qid"];
 
 
 ?>
@@ -82,8 +78,6 @@ $quizId = $_GET["qid"];
                 <?php include 'sidebar.php'; ?>
 
 
-                <div class="clearfix"></div>
-
             </div>
 
         </div>
@@ -93,29 +87,46 @@ $quizId = $_GET["qid"];
 
                 <?php include 'navbar.php'; ?>
 
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+
+                            <h4 class="page-title">Quiz History</h4>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="container-fluid">
+                    <?php
+                    $qhistory = $student->quizHistory($studId);
+                    foreach ($qhistory as $h) {
 
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box">
-
-                                <h5 class="page-title">Give Quiz</h5>
-
+                    ?>
+                        <div class="card">
+                            <div class="card-body">
+                                <?php
+                                $quiz = $student->quizNameHistory($h["quizId"]);
+                                foreach ($quiz as $qz) {
+                                ?>
+                                    <h2 class="card-title"><?php echo $qz["qname"]; ?></h2>
+                                    <h6 class="card-subtitle mb-2 text-muted"><?php echo $qz["qdesc"]; ?></h6>
+                                <?php
+                                }
+                                ?>
+                                <h4 class="card-text">Total Question - <?php echo $h["totalques"]; ?></h4>
+                                <h5 class="card-text">Correct answer - <?php echo $h["cansw"]; ?></h5>
+                                <h5 class="card-text">Wrong answer - <?php echo $h["wansw"]; ?></h5>
+                                <h4 class="card-text">Obtain Marks - <?php echo $h["totalmark"]; ?></h4>
                             </div>
                         </div>
-                    </div>
+                    <?php
 
-
-                    <div class="row">
-                        <div>
-                            <div class="col-xl-4 col-md-6" id="main-data">
-
-                            </div>
-                        </div>
-                    </div>
+                    }
+                    ?>
 
                 </div>
-                
+
             </div>
 
             <footer class="footer">
@@ -145,83 +156,6 @@ $quizId = $_GET["qid"];
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://unpkg.com/ionicons@latest/dist/ionicons.js"></script>
 
-    <script>
-        // $(document).ready(function() {
-
-
-        
-
-
-        function fm(page) {
-            $.ajax({
-                url: "ques-page.php",
-                type: "GET",
-                data: {
-                    qid: <?php echo $quizId; ?>,
-                    page: page ? page : 1
-                },
-                success: function(data) {
-                    $("#main-data").html(data)
-
-                },
-                error: function(err) {
-                    console.log("occur : " + err)
-                }
-            })
-
-
-        }
-
-        fm()
-
-        function read(p, v) {
-            $.ajax({
-                url: "save-answer.php",
-                type: "GET",
-                data: {
-                    rvalue: v,
-                    quesno: p ? p : 1
-                },
-                success: function(data) {
-                    console.log(data)
-                },
-                error: function(err) {
-                    console.log("occur : " + err)
-                }
-            })
-
-        }
-
-        $(document).on("click", ".page-link", function(e) {
-            e.preventDefault();
-
-            var btn1 = $(this).attr("id")
-
-            fm(btn1)
-
-        })
-
-        $(document).on("click", "#submit", function() {
-            $.ajax({
-                url: "result.php?quizId=<?php echo $quizId; ?>",
-                type: "GET",
-                success: function(data) {
-                    window.location.href = "dashboard.php";
-                    console.log(data)
-                },
-                error: function(err) {
-                    console.log("occur : " + err)
-                }
-            })
-        })
-    </script>
 </body>
 
 </html>
-
-    <?php 
-
-    }else{
-        header("Location: dashboard.php");
-    }
-?>

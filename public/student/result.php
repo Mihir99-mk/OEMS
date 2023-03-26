@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once("../../services/students/Studentservice.php");
-
 $studId = $_SESSION["studId"];
 $student = new StudentService();
 if (isset($_GET["quizId"])) {
@@ -22,27 +21,38 @@ if (isset($_GET["quizId"])) {
             foreach ($items as $item) {
                 $answers = $item["answer"];
                 $facId = $item["facId"];
+                $items = $student->configquiz($quizId);
+                // $completeCheck = $student -> QuizComplete($quizId,$student, 0);
+                foreach ($items as $v) {
+                    $total = $v["noofques"];
 
-                if (isset($_SESSION["answer"][$i])) {
 
-                    if ($answers == $_SESSION["answer"][$i]) {
-                        $correct = $correct + 1;
+                    if (isset($_SESSION["answer"][$i])) {
+
+                        if ($answers == $_SESSION["answer"][$i]) {
+                            $correct = $correct + $v["eachMark"];
+                        } else {
+                            $wrong = $wrong + $v["eachMark"];
+                        }
                     } else {
-                        $wrong = $wrong + 1;
+                        $wrong = $wrong + $v["eachMark"];
                     }
-                } else {
-                    $wrong = $wrong + 1;
                 }
             }
         }
     }
-    $items = $student->configquiz($quizId);
-    foreach ($items as $v) {
-        $total = $v["noofques"];
-    }
-    $result = $student->QuizResult($facId, $studId, $quizId, $correct, $wrong, $total, $correct);
+
+    $result = $student->QuizResult($studId, $quizId, $correct, $wrong, $total, $correct);
+
+    print_r($result);
     try {
         if ($result == 0) {
+            $items = $student->QuizComplete($quizId, $studId, 0);
+            
+            if ($items == 0) {
+                header("Location: dashboard.php");
+            } else {
+            }
             header("Location: dashboard.php");
         } else {
             throw new Exception("Error occurs in result generation", 1);
@@ -50,9 +60,8 @@ if (isset($_GET["quizId"])) {
     } catch (Exception $e) {
         echo $e->getMessage();
     }
+}   // header("Location: dashboard.php");
 
-}else{
-    header("Location: dashboard.php");
-}
+$_SESSION["exam_start"] = false;
 
 ?>

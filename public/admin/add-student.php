@@ -17,14 +17,10 @@ error_reporting(0);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Online examatation Management System" name="description">
     <meta content="Coderthemes" name="author">
-    <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-    <!-- third party css -->
     <link href="assets/css/vendor/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css">
-    <!-- third party css end -->
-
-    <!-- App css -->
+   
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css">
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style">
     <link href="assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style">
@@ -41,12 +37,9 @@ error_reporting(0);
 
 
 <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
-    <!-- Begin page -->
     <div class="wrapper">
-        <!-- ========== Left Sidebar Start ========== -->
         <div class="leftside-menu">
 
-            <!-- LOGO -->
             <a href="index.html" class="logo text-center logo-light">
                 <span class="logo-lg">
                     <img src="assets/images/logo.png" alt="" height="16">
@@ -56,7 +49,6 @@ error_reporting(0);
                 </span>
             </a>
 
-            <!-- LOGO -->
             <a href="index.html" class="logo text-center logo-dark">
                 <span class="logo-lg">
                     <img src="assets/images/logo-dark.png" alt="" height="16">
@@ -68,35 +60,22 @@ error_reporting(0);
 
             <div class="h-100" id="leftside-menu-container" data-simplebar="">
 
-                <!--- Sidemenu -->
                 <?php include 'sidebar.php'; ?>
 
 
-                <!-- End Sidebar -->
 
                 <div class="clearfix"></div>
 
             </div>
-            <!-- Sidebar -left -->
 
         </div>
-        <!-- Left Sidebar End -->
-
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
-
+        
         <div class="content-page">
             <div class="content">
-                <!-- Topbar Start -->
                 <?php include 'navbar.php'; ?>
-                <!-- end Topbar -->
-
-
-                <!-- Start Content-->
+                
                 <div class="container-fluid">
 
-                    <!-- start page title -->
                     <div class="row">
 
                         <div class="col-12">
